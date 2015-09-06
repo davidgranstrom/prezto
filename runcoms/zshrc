@@ -25,9 +25,23 @@ alias vim='mvim -v'
 # zsh
 bindkey '^R' history-incremental-search-backward
 
-# set LANG
-# LANG=en_US.UTF-8
-# LC_CTYPE=en_US.UTF-8
-# LC_MESSAGES=en_US.UTF-8
+# Setup fuzzy bookmark search function
+# ------------------------------------
+unalias c 2> /dev/null
+c() {
+   local dest_dir=$(bookmarks_glob_echo | fzf)
+   if [[ $dest_dir != '' ]]; then
+      cd "$dest_dir"
+   fi
+}
+export -f c > /dev/null
+
+# add bookmark entry
+unalias bkm 2> /dev/null
+bkm() {
+    bookmark_pwd
+    echo "Added bookmark:" `pwd`
+}
+export -f bkm > /dev/null
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
